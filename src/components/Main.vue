@@ -13,6 +13,7 @@
     <div class="container">
       {{ this.stock }}
       <div class="stock_name">{{ stockprice }}</div>
+      <div>{{}}</div>
     </div>
 
     <div class="row" v-if="loaded">
@@ -48,6 +49,8 @@ export default {
       stock: "",
       ChartOptionsBar: {},
       stockprice: "",
+      allprofile: [],
+      profile: []
     };
   },
   methods: {
@@ -188,9 +191,23 @@ export default {
             ]);
           this.plotStock(this.allfinancials);
           this.stockPrice();
+          this.getExecs();
         })
         .catch((err) => console.log(err));
     },
+    getExecs() {
+      this.url =
+        "https://financialmodelingprep.com/api/v3/profile/" +
+        this.stock +
+        `?apikey=${apikey}`;
+      axios
+        .get(this.url)
+        .then((res) => {
+          (this.allprofile = res.data)
+          console.log(this.allprofile);
+        })
+        .catch((err) => console.log(err));
+    }
   },
 };
 </script>
